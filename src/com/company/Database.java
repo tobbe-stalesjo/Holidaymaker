@@ -123,9 +123,7 @@ public class Database {
         }
     }
 
-    public String getCustomerID(String emailAddress) {
-        StringBuilder ID = new StringBuilder();
-
+    public int getCustomerID(String emailAddress) {
         try {
             statement = connection.prepareStatement("SELECT email FROM customer\n" +
                     "WHERE email = ?\n");
@@ -133,15 +131,24 @@ public class Database {
             statement.setString(1, emailAddress);
             resultSet = statement.executeQuery();
 
-            while (resultSet.next()){
-                ID.append(resultSet.getString("id"));
+            try {
+                while(resultSet.next()){
+                    String guestID =
+                            "**************************************" + "\n" +
+                            "ID: " + resultSet.getInt("id") + "\n" +
+                            "**************************************" + "\n";
+
+                    System.out.println(guestID);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error message: " + e.getMessage());
             }
 
         }
         catch(Exception e){
             e.printStackTrace();
         }
-        return ID.toString();
+        return ; // Varför kan jag inte skicka tillbaka en int?
     }
 
     public void bookingRoom(int userID, String checkInDate, String checkOutDate, int numberOfGuest) {

@@ -53,7 +53,7 @@ public class Booking {
         System.out.println(checkInDate + " " + checkOutDate);
         System.out.println("Would you like to book these dates? [Y]/[N]");
         String book = scanner.nextLine().toUpperCase();
-        if (book.equals("y")) {
+        if (book.equals("Y")) {
             bookRoom(checkInDate, checkOutDate, numberOfGuest);
         }
 
@@ -63,11 +63,10 @@ public class Booking {
         System.out.println("Enter your email: ");
         String emailAddress = scanner.nextLine();
 
-        String guestID = database.getCustomerID(emailAddress);
-        int userID = Integer.parseInt(guestID);
+        int guestID = database.getCustomerID(emailAddress);
         System.out.println(guestID);
 
-        database.bookingRoom(userID, checkInDate, checkOutDate, numberOfGuest);
+        database.bookingRoom(guestID, checkInDate, checkOutDate, numberOfGuest);
 
     }
 
