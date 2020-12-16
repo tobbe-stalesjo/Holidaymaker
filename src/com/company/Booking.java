@@ -60,6 +60,14 @@ public class Booking {
     }
 
     private void bookRoom(String checkInDate, String checkOutDate, int numberOfGuest) {
+        System.out.println("Enter your email: ");
+        String emailAddress = scanner.nextLine();
+
+        String guestID = database.getCustomerID(emailAddress);
+        int userID = Integer.parseInt(guestID);
+        System.out.println(guestID);
+
+        database.bookingRoom(userID, checkInDate, checkOutDate, numberOfGuest);
 
     }
 

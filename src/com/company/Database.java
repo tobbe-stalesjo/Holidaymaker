@@ -122,4 +122,43 @@ public class Database {
             System.out.println("Error message: " + e.getMessage());
         }
     }
+
+    public String getCustomerID(String emailAddress) {
+        StringBuilder ID = new StringBuilder();
+
+        try {
+            statement = connection.prepareStatement("SELECT email FROM customer\n" +
+                    "WHERE email = ?\n");
+
+            statement.setString(1, emailAddress);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                ID.append(resultSet.getString("id"));
+            }
+
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return ID.toString();
+    }
+
+    public void bookingRoom(int userID, String checkInDate, String checkOutDate, int numberOfGuest) {
+        try {
+            statement = connection.prepareStatement("INSERT INTO booking(customer_id, check_in_date, check_out_date, number_of_guest)\n" +
+                    "VALUES(?, ?, ?, ?);");
+            statement.setInt(1, userID);
+            statement.setString(2, checkInDate);
+            statement.setString(3, checkOutDate);
+            statement.setInt(4, numberOfGuest);
+
+            statement.executeUpdate();
+
+            System.out.println("Booking added. ");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
