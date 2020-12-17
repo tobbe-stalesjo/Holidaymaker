@@ -32,19 +32,7 @@ public class Booking {
         int numberOfGuest = scanner.nextInt();
         scanner.nextLine();
 
-        System.out.println("What options do you want?");
-        System.out.println("Restaurant? [Y]/[N]");
-        String restaurant = scanner.nextLine().toUpperCase();
-        System.out.println("Pool? [Y]/[N]");
-        String pool = scanner.nextLine().toUpperCase();
-        System.out.println("Entertainment? [Y]/[N]");
-        String entertainment = scanner.nextLine().toUpperCase();
-        System.out.println("Kids Club? [Y]/[N]");
-        String kidsClub = scanner.nextLine().toUpperCase();
-
-
-        database.checkHotels(restaurant, pool, entertainment, kidsClub);
-
+        String[] hotel = checkAvailableHotels();
 
         String[] bookingDates = checkDates();
         String checkInDate = bookingDates[0];
@@ -56,18 +44,53 @@ public class Booking {
         if (book.equals("Y")) {
             bookRoom(checkInDate, checkOutDate, numberOfGuest);
         }
-
     }
 
     private void bookRoom(String checkInDate, String checkOutDate, int numberOfGuest) {
-        System.out.println("Enter your email: ");
-        String emailAddress = scanner.nextLine();
+        int userID = checkExistingCustomer();
 
-        int guestID = database.getCustomerID(emailAddress);
-        System.out.println(guestID);
+        database.bookingRoom(userID, checkInDate, checkOutDate, numberOfGuest);
 
-        database.bookingRoom(guestID, checkInDate, checkOutDate, numberOfGuest);
+    }
 
+    private String[] checkAvailableHotels() {
+        String hotelID = "";
+
+        try{
+        System.out.println("What options do you want?");
+        System.out.println("Restaurant? [Y]/[N]");
+        String restaurant = scanner.nextLine().toUpperCase();
+        System.out.println("Pool? [Y]/[N]");
+        String pool = scanner.nextLine().toUpperCase();
+        System.out.println("Entertainment? [Y]/[N]");
+        String entertainment = scanner.nextLine().toUpperCase();
+        System.out.println("Kids Club? [Y]/[N]");
+        String kidsClub = scanner.nextLine().toUpperCase();
+
+        hotelID = database.checkHotels(restaurant, pool, entertainment, kidsClub);
+        }
+        catch (Exception  e) {
+            e.printStackTrace();
+        }
+
+        String[] hotels = hotelID.split("", 0);
+
+        return hotels;
+    }
+
+
+    private int checkExistingCustomer(){
+        String guestID = "";
+
+            try {
+                System.out.println("Enter your email: ");
+                String email = scanner.nextLine();
+                guestID = database.getCustomerID(email);
+            }
+            catch (Exception  e) {
+                e.printStackTrace();
+            }
+        return Integer.parseInt(guestID);
     }
 
 

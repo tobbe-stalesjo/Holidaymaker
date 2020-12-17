@@ -88,7 +88,9 @@ public class Database {
     }
 
 
-    public void checkHotels(String restaurant, String pool, String entertainment, String kidsClub) {
+    public String checkHotels(String restaurant, String pool, String entertainment, String kidsClub) {
+        StringBuilder ID = new StringBuilder();
+
         try {
             String query = "SELECT * FROM facility\n" +
                     "WHERE restaurant = ? \n" +
@@ -105,50 +107,35 @@ public class Database {
 
             resultSet = statement.executeQuery();
 
-        } catch (Exception e) {
+            while (resultSet.next()){
+                ID.append(resultSet.getString("id"));
+            }
+        }
+        catch(Exception e){
             e.printStackTrace();
         }
-
-        try {
-                while(resultSet.next()){
-                    String filterHotels =
-                            "**************************************" + "\n" +
-                            "ID: " + resultSet.getInt("id") + "\n" +
-                            "**************************************" + "\n";
-
-                    System.out.println(filterHotels);
-                }
-            } catch (SQLException e) {
-            System.out.println("Error message: " + e.getMessage());
-        }
+        return ID.toString();
     }
 
-    public int getCustomerID(String emailAddress) {
+
+    public String getCustomerID(String emailAddress) {
+        StringBuilder ID = new StringBuilder();
+
         try {
-            statement = connection.prepareStatement("SELECT email FROM customer\n" +
+            statement = connection.prepareStatement("SELECT * FROM customer\n" +
                     "WHERE email = ?\n");
 
             statement.setString(1, emailAddress);
             resultSet = statement.executeQuery();
 
-            try {
-                while(resultSet.next()){
-                    String guestID =
-                            "**************************************" + "\n" +
-                            "ID: " + resultSet.getInt("id") + "\n" +
-                            "**************************************" + "\n";
-
-                    System.out.println(guestID);
-                }
-            } catch (SQLException e) {
-                System.out.println("Error message: " + e.getMessage());
+            while (resultSet.next()){
+                ID.append(resultSet.getString("id"));
             }
-
         }
         catch(Exception e){
             e.printStackTrace();
         }
-        return ; // Varför kan jag inte skicka tillbaka en int?
+        return ID.toString();
     }
 
     public void bookingRoom(int userID, String checkInDate, String checkOutDate, int numberOfGuest) {
