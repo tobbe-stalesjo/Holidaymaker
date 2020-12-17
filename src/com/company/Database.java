@@ -138,19 +138,40 @@ public class Database {
         return ID.toString();
     }
 
-    public void bookingRoom(int userID, String checkInDate, String checkOutDate, int numberOfGuest) {
+    public void bookingRoom(int userID, String checkInDate, String checkOutDate, int numberOfGuest, int roomNumber) {
         try {
-            statement = connection.prepareStatement("INSERT INTO booking(customer_id, check_in_date, check_out_date, number_of_guest)\n" +
-                    "VALUES(?, ?, ?, ?);");
+            statement = connection.prepareStatement("INSERT INTO booking(customer_id, check_in_date, check_out_date, number_of_guest, room_id)\n" +
+                    "VALUES(?, ?, ?, ?, ?);");
             statement.setInt(1, userID);
             statement.setString(2, checkInDate);
             statement.setString(3, checkOutDate);
             statement.setInt(4, numberOfGuest);
+            statement.setInt(5, roomNumber);
 
             statement.executeUpdate();
 
             System.out.println("Booking added. ");
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void chooseRooms(int hotelChoice, int numberOfGuest) {
+        try {
+            statement = connection.prepareStatement("SELECT * FROM rooms\n" +
+                    "WHERE hotel_id = ? \n" +
+                    "AND beds = ?");
+            statement.setInt(1, hotelChoice);
+            statement.setInt(2, numberOfGuest);
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String roomInformation =
+                        "ROOM NUMBER: " + resultSet.getString("id");
+                System.out.println(roomInformation);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

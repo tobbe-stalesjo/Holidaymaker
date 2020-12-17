@@ -33,6 +33,12 @@ public class Booking {
         scanner.nextLine();
 
         String[] hotel = checkAvailableHotels();
+        int hotelChoice = pickhotel(hotel);
+
+        database.chooseRooms(hotelChoice, numberOfGuest);
+        System.out.println("Pick a room number: ");
+        int roomNumber = scanner.nextInt();
+        scanner.nextLine();
 
         String[] bookingDates = checkDates();
         String checkInDate = bookingDates[0];
@@ -42,14 +48,41 @@ public class Booking {
         System.out.println("Would you like to book these dates? [Y]/[N]");
         String book = scanner.nextLine().toUpperCase();
         if (book.equals("Y")) {
-            bookRoom(checkInDate, checkOutDate, numberOfGuest);
+            bookRoom(checkInDate, checkOutDate, numberOfGuest, roomNumber);
         }
     }
 
-    private void bookRoom(String checkInDate, String checkOutDate, int numberOfGuest) {
+    private int pickhotel(String[] hotel) {
+
+        for (String i : hotel)
+            switch (i) {
+                case "1":
+                    System.out.println("1. Spain");
+                    break;
+                case "2":
+                    System.out.println("2. Italy");
+                    break;
+                case "3":
+                    System.out.println("3. France");
+                    break;
+                case "4":
+                    System.out.println("4. U.K");
+                    break;
+                default:
+                    System.out.println("5. Germany");
+                    break;
+            }
+        System.out.println("Please enter the number of your choice: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        return choice;
+    }
+
+    private void bookRoom(String checkInDate, String checkOutDate, int numberOfGuest, int roomNumber) {
         int userID = checkExistingCustomer();
 
-        database.bookingRoom(userID, checkInDate, checkOutDate, numberOfGuest);
+        database.bookingRoom(userID, checkInDate, checkOutDate, numberOfGuest, roomNumber);
 
     }
 
@@ -66,6 +99,7 @@ public class Booking {
         String entertainment = scanner.nextLine().toUpperCase();
         System.out.println("Kids Club? [Y]/[N]");
         String kidsClub = scanner.nextLine().toUpperCase();
+        scanner.nextLine();
 
         hotelID = database.checkHotels(restaurant, pool, entertainment, kidsClub);
         }
