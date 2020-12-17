@@ -35,14 +35,14 @@ public class Booking {
         String[] hotel = checkAvailableHotels();
         int hotelChoice = pickhotel(hotel);
 
+        String[] bookingDates = checkDates();
+        String checkInDate = bookingDates[0];
+        String checkOutDate = bookingDates[1];
+
         database.chooseRooms(hotelChoice, numberOfGuest);
         System.out.println("Pick a room number: ");
         int roomNumber = scanner.nextInt();
         scanner.nextLine();
-
-        String[] bookingDates = checkDates();
-        String checkInDate = bookingDates[0];
-        String checkOutDate = bookingDates[1];
 
         System.out.println(checkInDate + " " + checkOutDate);
         System.out.println("Would you like to book these dates? [Y]/[N]");
