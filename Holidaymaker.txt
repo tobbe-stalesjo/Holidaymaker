@@ -1,0 +1,7 @@
+chooseRooms
+Här skulle man kollat vilka datum och rum som redan var bokade på det hotellet
+
+checkBookingDates
+Här skulle man vilja kolla datumen på det specifika hotellet.
+
+
